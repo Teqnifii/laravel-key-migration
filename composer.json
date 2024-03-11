@@ -1,6 +1,6 @@
 {
     "name": "teqnifii/laravel-key-migration",
-    "description": "A package to help you migrate your Laravel application to use a different key for encrypting and decrypting data.",
+    "description": "Rotate your Laravel keys and migrate your encrypted data to a new key.",
     "keywords": [
         "Teqnifii",
         "laravel",
