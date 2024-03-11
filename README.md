@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/teqnifii/laravel-key-migration/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/teqnifii/laravel-key-migration/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/teqnifii/laravel-key-migration.svg?style=flat-square)](https://packagist.org/packages/teqnifii/laravel-key-migration)
 
-App Key rotation, and migrating records in the DB without the hassles of waiting for everything to update.
+App Key rotation and migrating records in the DB without the hassles of waiting for everything to update.
 
 ## Installation
 
