@@ -16,7 +16,7 @@ composer require teqnifii/laravel-key-migration
 ```
 
 ### *IMPORTANT NOTE*
-> Make sure your models are using the cast type `ncrypted` for the fields you want to encrypt:
+> Make sure your models are using the cast type `encrypted` for the fields you want to encrypt:
 
 ```php
 <?php
