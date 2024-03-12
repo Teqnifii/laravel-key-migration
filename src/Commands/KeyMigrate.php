@@ -40,7 +40,7 @@ class KeyMigrate extends Command
             if (count($models) > 1) {
                 warning('You are about to migrate a large number of models. This could take a long time to complete.');
                 $confirm = confirm('Continue?', default: false, hint: 'Recommended to run as a job on a queue for large number of models.');
-                if (! $confirm) {
+                if (!$confirm) {
                     return;
                 }
             }
@@ -60,8 +60,8 @@ class KeyMigrate extends Command
                     }
                 }
                 if ($migrate) {
-                    $this->info('Migrating '.$model.' columns: '.implode(', ', $columns));
-                    $progress = progress('Migrating '.$model.' columns: '.implode(', ', $columns).'...', $model::count());
+                    $this->info('Migrating ' . $model . ' columns: ' . implode(', ', $columns));
+                    $progress = progress('Migrating ' . $model . ' columns: ' . implode(', ', $columns) . '...', $model::count());
                     $model::chunk(100, function ($models) use ($columns, $progress) {
                         foreach ($models as $model) {
                             foreach ($columns as $column) {
@@ -94,7 +94,7 @@ class KeyMigrate extends Command
             return $file->getExtension() === 'php';
         });
         foreach ($modelFiles as $modelFile) {
-            $class = str_replace(['app/', '/', '.php'], ['App/', '\\', ''], $suffix.$modelFile->getRelativePathname());
+            $class = str_replace(['app/', '/', '.php'], ['App/', '\\', ''], $suffix . $modelFile->getRelativePathname());
             if (class_exists($class)) {
                 if (is_subclass_of($class, 'Illuminate\Database\Eloquent\Model')) {
                     $models[] = $class;
