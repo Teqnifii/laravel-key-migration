@@ -26,6 +26,10 @@ class KeyRotate extends Command
      */
     public function handle()
     {
+        if (! File::exists(base_path('.env'))) {
+            $this->error('The .env file does not exist.');
+            return 1;
+        }
         $this->info('Rotating the app key...');
         $currentKey = config('app.key');
         $this->addToPreviousKeys($currentKey);
