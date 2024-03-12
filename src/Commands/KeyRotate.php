@@ -26,7 +26,7 @@ class KeyRotate extends Command
      */
     public function handle()
     {
-        if (!File::exists(base_path('.env'))) {
+        if (! File::exists(base_path('.env'))) {
             $this->error('The .env file does not exist.');
 
             return 1;
@@ -41,9 +41,9 @@ class KeyRotate extends Command
     {
         $env = File::get(base_path('.env'));
         if (str_contains($env, 'APP_PREVIOUS_KEYS')) {
-            $env = preg_replace('/APP_PREVIOUS_KEYS=(.*)/', 'APP_PREVIOUS_KEYS=$1,' . $key, $env);
+            $env = preg_replace('/APP_PREVIOUS_KEYS=(.*)/', 'APP_PREVIOUS_KEYS=$1,'.$key, $env);
         } else {
-            $env = preg_replace('/APP_KEY=(.*)/', 'APP_KEY=$1' . PHP_EOL . 'APP_PREVIOUS_KEYS=' . $key, $env);
+            $env = preg_replace('/APP_KEY=(.*)/', 'APP_KEY=$1'.PHP_EOL.'APP_PREVIOUS_KEYS='.$key, $env);
         }
         File::put(base_path('.env'), $env);
         $this->info('App key added to previous keys.');
