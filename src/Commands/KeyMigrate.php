@@ -5,10 +5,10 @@ namespace Teqnifii\LaravelKeyMigration\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
+
 use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\warning;
-use function Laravel\Prompts\spin;
 use function Laravel\Prompts\progress;
+use function Laravel\Prompts\warning;
 
 class KeyMigrate extends Command
 {
@@ -31,16 +31,16 @@ class KeyMigrate extends Command
      */
     public function handle()
     {
-        if($this->option('job')) {
-            foreach ($this->getAllModels() AS $model) {
+        if ($this->option('job')) {
+            foreach ($this->getAllModels() as $model) {
 
             }
         } else {
             $models = $this->getAllModels();
-            if(count($models) > 1) {
+            if (count($models) > 1) {
                 warning('You are about to migrate a large number of models. This could take a long time to complete.');
                 $confirm = confirm('Continue?', default: false, hint: 'Recommended to run as a job on a queue for large number of models.');
-                if(!$confirm) {
+                if (! $confirm) {
                     return;
                 }
             }
@@ -49,22 +49,22 @@ class KeyMigrate extends Command
              * @var Model[] $models
              * @var Model $model
              */
-            foreach($models AS $model) {
+            foreach ($models as $model) {
                 $migrate = false;
                 $columns = [];
                 $modelClass = new $model;
-                foreach ($modelClass->getCasts() AS $column => $cast) {
-                    if($cast === 'encrypted') {
+                foreach ($modelClass->getCasts() as $column => $cast) {
+                    if ($cast === 'encrypted') {
                         $migrate = true;
                         $columns[] = $column;
                     }
                 }
-                if($migrate) {
-                    $this->info('Migrating ' . $model . ' columns: ' . implode(', ', $columns));
-                    $progress = progress('Migrating ' . $model . ' columns: ' . implode(', ', $columns) . '...', $model::count());
-                    $model::chunk(100, function($models) use ($columns, $progress) {
-                        foreach ($models AS $model) {
-                            foreach ($columns AS $column) {
+                if ($migrate) {
+                    $this->info('Migrating '.$model.' columns: '.implode(', ', $columns));
+                    $progress = progress('Migrating '.$model.' columns: '.implode(', ', $columns).'...', $model::count());
+                    $model::chunk(100, function ($models) use ($columns, $progress) {
+                        foreach ($models as $model) {
+                            foreach ($columns as $column) {
                                 // This is since there was some bugs randomly where pulling the model would not reset the encrypted value with the new key.
                                 // Don't know why, but this seems to fix it.
                                 $model->{$column} = $model->{$column};
@@ -82,25 +82,26 @@ class KeyMigrate extends Command
     protected function getAllModels(): array
     {
         $models = [];
-        if($this->option('vendor')) {
+        if ($this->option('vendor')) {
             $modelsPath = base_path();
-            $suffix = "";
+            $suffix = '';
         } else {
             $modelsPath = base_path('app/Models');
-            $suffix = "app/Models/";
+            $suffix = 'app/Models/';
         }
         $modelFiles = File::allFiles($modelsPath);
-        $modelFiles = array_filter($modelFiles, function($file) {
+        $modelFiles = array_filter($modelFiles, function ($file) {
             return $file->getExtension() === 'php';
         });
         foreach ($modelFiles as $modelFile) {
-            $class = str_replace(['app/', '/', '.php',], ['App/', '\\', ''], $suffix . $modelFile->getRelativePathname());
-            if(class_exists($class)) {
-                if(is_subclass_of($class, 'Illuminate\Database\Eloquent\Model')) {
+            $class = str_replace(['app/', '/', '.php'], ['App/', '\\', ''], $suffix.$modelFile->getRelativePathname());
+            if (class_exists($class)) {
+                if (is_subclass_of($class, 'Illuminate\Database\Eloquent\Model')) {
                     $models[] = $class;
                 }
             }
         }
+
         return $models;
     }
 }

@@ -5,7 +5,6 @@ namespace Teqnifii\LaravelKeyMigration\Tests;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Teqnifii\LaravelKeyMigration\LaravelKeyMigrationServiceProvider;
-use VendorName\Skeleton\SkeletonServiceProvider;
 
 class TestCase extends Orchestra
 {

@@ -3,12 +3,7 @@
 namespace Teqnifii\LaravelKeyMigration\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\warning;
-use function Laravel\Prompts\spin;
-use function Laravel\Prompts\progress;
 
 class KeyRotate extends Command
 {
@@ -37,12 +32,13 @@ class KeyRotate extends Command
         $this->call('key:generate');
     }
 
-    protected function addToPreviousKeys($key) {
+    protected function addToPreviousKeys($key)
+    {
         $env = File::get(base_path('.env'));
-        if(str_contains($env, 'APP_PREVIOUS_KEYS')) {
-            $env = preg_replace('/APP_PREVIOUS_KEYS=(.*)/', 'APP_PREVIOUS_KEYS=$1,' . $key, $env);
+        if (str_contains($env, 'APP_PREVIOUS_KEYS')) {
+            $env = preg_replace('/APP_PREVIOUS_KEYS=(.*)/', 'APP_PREVIOUS_KEYS=$1,'.$key, $env);
         } else {
-            $env = preg_replace('/APP_KEY=(.*)/', 'APP_KEY=$1' . PHP_EOL . 'APP_PREVIOUS_KEYS=' . $key, $env);
+            $env = preg_replace('/APP_KEY=(.*)/', 'APP_KEY=$1'.PHP_EOL.'APP_PREVIOUS_KEYS='.$key, $env);
         }
         File::put(base_path('.env'), $env);
         $this->info('App key added to previous keys.');
